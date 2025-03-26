@@ -5,92 +5,22 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 
+
     
-   <script async src="https://ga.jspm.io/npm:es-module-shims@1.7.1/dist/es-module-shims.js"></script>
-
-<!-- Import Three.js using an import-map -->
-<script type="importmap">
-  {
-    "imports": {
-      "three": "https://cdn.jsdelivr.net/npm/three@^0.169.0/build/three.module.min.js"
-    }
-  }
-</script>
-<script type="module" src=" https://cdn.jsdelivr.net/npm/@google/model-viewer/dist/model-viewer-module.min.js "></script>
-
-<script type="module" src=" https://cdn.jsdelivr.net/npm/@google/model-viewer-effects/dist/model-viewer-effects.min.js "></script>
+   <script type="module" src="https://unpkg.com/@google/model-viewer@latest"></script>
 
 
 
-    <title>3D Model Viewer</title>
+    <title>spiegltec viewer</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
 
 
 <model-viewer id="effectsViewer" camera-controls scale="0.1 0.1 0.1" touch-action="pan-y" environment-image="RetailStore.hdr" src="Spiegltec_reduced.glb" ar alt="A 3D">
-                  <effect-composer render-mode="quality">
-                    <outline-effect color="blue" blend-mode="skip"></outline-effect>
-                    <ssao-effect strength="5" blend-mode="skip"></ssao-effect>
-                    <glitch-effect blend-mode="skip"></glitch-effect>
-                    <smaa-effect blend-mode="skip"></smaa-effect>
-                    <bloom-effect radius="0.1" blend-mode="skip"></bloom-effect>
-                    <pixelate-effect granularity="5" blend-mode="skip"></pixelate-effect>
-                    <color-grade-effect blend-mode="default"></color-grade-effect>
-                  </effect-composer>
-                  
+                
                 </model-viewer>
-                <div class="controls glass">
-                    <div>
-                      <input type="checkbox" id="outline">
-                      <label for="outline">Outline Effect</label>
-                    </div>
-                    <div>
-                      <input type="checkbox" id="ssao">
-                      <label for="ssao">SSAO Effect</label>
-                    </div>
-                    <div>
-                      <input type="checkbox" id="glitch">
-                      <label for="glitch">Glitch Effect</label>
-                    </div>
-                    <div>
-                      <input type="checkbox" id="smaa">
-                      <label for="smaa">SMAA Effect</label>
-                    </div>
-                    <div>
-                      <input type="checkbox" id="bloom">
-                      <label for="bloom">Bloom Effect</label>
-                    </div>
-                    <div>
-                      <input type="checkbox" id="pixelate">
-                      <label for="pixelate">Pixelate Effect</label>
-                    </div>
-                    <div>
-                      <input type="checkbox" id="colorgrade" checked>
-                      <label for="colorgrade">Color Grade Effect</label>
-                    </div>
-                  </div>
-                <script>
-                  const effectsViewer = document.querySelector("model-viewer#effectsViewer");
-                  const effects = document.querySelector("effect-composer").children;
-                  const inputs = document.querySelectorAll("input");
-                  let roughness
-
-                  for (let i = 0; i < effects.length; i++) {
-                    inputs[i].addEventListener('change', (e) => effects[i].blendMode = e.target.checked ? 'default' : 'skip');
-                  }
-
-                  const modelViewerParameters = document.querySelector("model-viewer#effectsViewer"); 
-                  modelViewerParameters.addEventListener("load", (ev) => {
-                  console.log(modelViewerParameters.model.materials)
-                  
-                  roughness= function setRoughness(mat, val) {
-                    const material=modelViewerParameters.model.materials[mat]
-                    material.pbrMetallicRoughness.setRoughnessFactor(val)
-                  }
-                  
-                });
-
-                </script>
+               
 </body>
 </html>

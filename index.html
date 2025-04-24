@@ -4,36 +4,33 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-
-
-  <script async src="https://ga.jspm.io/npm:es-module-shims@1.7.1/dist/es-module-shims.js"></script>
-
-<!-- Import Three.js using an import-map -->
-<script type="importmap">
-  {
-    "imports": {
-      "three": "https://cdn.jsdelivr.net/npm/three@^0.169.0/build/three.module.min.js"
+  <!-- three.js as base library with model-viewer and model-viewer-effects must be loaded -->
+  <script type="importmap">
+    {
+      "imports": {
+        "three": "https://cdn.jsdelivr.net/npm/three@^0.169.0/build/three.module.min.js"
+      }
     }
-  }
-</script>
-<script type="module" src=" https://cdn.jsdelivr.net/npm/@google/model-viewer/dist/model-viewer-module.min.js "></script>
+  </script>
+  <script type="module" src=" https://cdn.jsdelivr.net/npm/@google/model-viewer/dist/model-viewer-module.min.js "></script>
+  <script type="module" src=" https://cdn.jsdelivr.net/npm/@google/model-viewer-effects/dist/model-viewer-effects.min.js "></script>
 
-<script type="module" src=" https://cdn.jsdelivr.net/npm/@google/model-viewer-effects/dist/model-viewer-effects.min.js "></script>
-<link rel="stylesheet" href="style.css">
+  <!-- css can be adapted/changes/removes as needed -->
+  <link rel="stylesheet" href="style.css">
 
-<title>3D Model Viewer</title>
+  <title>3D Model Viewer</title>
 </head>
+
 <body>
-
-
-  <model-viewer exposure="-5" id="sphere" camera-controls touch-action="pan-y" max-camera-orbit="auto 90deg auto"interaction-prompt="none" shadow-softness="1" src="Spiegltec_reduced.glb" skybox-height="1.5m" shadow-intensity="2" environment-image="RetailStore_sw_levels.hdr" ar alt="3D_model">
-   <effect-composer id="selectiveComposer" render-mode="performance">
+  <!-- model-viewer and script must be kept as is to guarantee correct visualisation -->
+  <model-viewer exposure="-5" id="device" camera-controls touch-action="pan-y" max-camera-orbit="auto 90deg auto"interaction-prompt="none" shadow-softness="1" src="Spiegltec_reduced.glb" skybox-height="1.5m" shadow-intensity="2" environment-image="RetailStore_sw_levels.hdr" ar alt="spiegltec device 3D model">
+   <effect-composer id="composer" render-mode="performance">
     <selective-bloom-effect strength="5" radius="0.1" threshold="0.0"></selective-bloom-effect>
-   
   </effect-composer>
 </model-viewer>
+
 <script type="module" >
- const selectiveComposer = document.querySelector("effect-composer#selectiveComposer");
+ const selectiveComposer = document.querySelector("effect-composer#composer");
  const selectiveBloom = selectiveComposer.querySelector("selective-bloom-effect");
 
  selectiveComposer.addEventListener('updated-selection', () => {
@@ -42,10 +39,7 @@
     if (obj.name.localeCompare("Holo2JB") === 0 ){
      selectionBloom.push(obj)
    }
-
-
-});
-   console.log("bloom: ", selectionBloom)
+ });
    selectiveBloom.selection = selectionBloom;
  });
 </script>

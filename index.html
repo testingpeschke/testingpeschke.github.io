@@ -1,49 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-  <!-- three.js as base library with model-viewer and model-viewer-effects must be loaded -->
-  <script type="importmap">
-    {
-      "imports": {
-        "three": "https://cdn.jsdelivr.net/npm/three@^0.169.0/build/three.module.min.js"
-      }
-    }
-  </script>
-  <script type="module" src=" https://cdn.jsdelivr.net/npm/@google/model-viewer/dist/model-viewer-module.min.js "></script>
-  <script type="module" src=" https://cdn.jsdelivr.net/npm/@google/model-viewer-effects/dist/model-viewer-effects.min.js "></script>
-
-  <!-- css can be adapted/changes/removes as needed -->
-  <link rel="stylesheet" href="style.css">
-
-  <title>3D Model Viewer</title>
+  <meta charset="utf-8">
+  <title>3D showcase</title>
 </head>
-
 <body>
-  <!-- model-viewer and script must be kept as is to guarantee correct visualisation -->
-  <model-viewer exposure="-5" id="device" camera-controls touch-action="pan-y" max-camera-orbit="auto 90deg auto"interaction-prompt="none" shadow-softness="1" src="Webviewer_V3.glb" skybox-height="1.5m" shadow-intensity="2" environment-image="Retail Store_sw_levels.hdr" ar alt="spiegltec device 3D model">
-   <effect-composer id="composer" render-mode="performance">
-    <selective-bloom-effect strength="5" radius="0.1" threshold="0.0"></selective-bloom-effect>
-  </effect-composer>
-</model-viewer>
-
-<script type="module" >
- const selectiveComposer = document.querySelector("effect-composer#composer");
- const selectiveBloom = selectiveComposer.querySelector("selective-bloom-effect");
-
- selectiveComposer.addEventListener('updated-selection', () => {
-   const selectionBloom = [];
-   selectiveComposer.selection.forEach((obj) =>{
-    if (obj.name.localeCompare("Holo_InnerLayerweb001") === 0 ){
-     selectionBloom.push(obj)
-   }
- });
-   selectiveBloom.selection = selectionBloom;
- });
-</script>
-
-
+  <a href="/engel/engelTest.html">Engel Machine</a></br>
+  <a href="/plane/indexHangarTest.html">Plane</a>
 </body>
+
 </html>

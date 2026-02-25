@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- three.js as base library with model-viewer and model-viewer-effects must be loaded -->
+  <script type="importmap">
+    {
+      "imports": {
+        "three": "https://cdn.jsdelivr.net/npm/three@^0.169.0/build/three.module.min.js"
+      }
+    }
+  </script>
+  <script type="module" src=" https://cdn.jsdelivr.net/npm/@google/model-viewer/dist/model-viewer-module.min.js "></script>
+  <script type="module" src=" https://cdn.jsdelivr.net/npm/@google/model-viewer-effects/dist/model-viewer-effects.min.js "></script>
+
+
+  <title>3D Model Viewer</title>
+  <style type="text/css">
+    model-viewer{
+      height:1000px;
+      width: 100%;
+      background: #2b2a2a;
+
+    }
+
+    body { margin: 0; padding: 0; box-sizing: border-box; background: #2b2a2a;font-family: Causten-Regular, sans-serif;}
+
+    .diffuse-control{
+      color:white;
+      gap:1rem;
+      font-family: Causten-Regular, sans-serif;;
+      display:flex;
+      flex-direction: column;
+      font-size: 1.125rem;
+      align-items: flex-start;
+
+      padding: 1.875rem;
+      border-radius: 1.25rem;
+      border: 1px solid rgba(122, 122, 122, 0.70);
+      background: linear-gradient(152deg, rgba(0, 0, 0, 0.40) 1.55%, rgba(0, 0, 0, 0.16) 97.37%);
+      box-shadow: 233px 250px 96px 0 rgba(0, 0, 0, 0.00), 149px 160px 88px 0 rgba(0, 0, 0, 0.01), 84px 90px 74px 0 rgba(0, 0, 0, 0.05), 37px 40px 55px 0 rgba(0, 0, 0, 0.09), 9px 10px 30px 0 rgba(0, 0, 0, 0.10);
+      backdrop-filter: blur(15px);
+    }
+
+    .action-control{
+      color:white;
+      gap:1rem;
+      font-family: Causten-Regular, sans-serif;;
+      display:flex;
+      flex-direction: row;
+      font-size: 1.125rem;
+      align-items: flex-start;
+
+      padding: 1.875rem;
+      border-radius: 1.25rem;
+      border: 1px solid rgba(122, 122, 122, 0.70);
+      background: linear-gradient(152deg, rgba(0, 0, 0, 0.40) 1.55%, rgba(0, 0, 0, 0.16) 97.37%);
+      box-shadow: 233px 250px 96px 0 rgba(0, 0, 0, 0.00), 149px 160px 88px 0 rgba(0, 0, 0, 0.01), 84px 90px 74px 0 rgba(0, 0, 0, 0.05), 37px 40px 55px 0 rgba(0, 0, 0, 0.09), 9px 10px 30px 0 rgba(0, 0, 0, 0.10);
+      backdrop-filter: blur(15px);
+    }
+
+    .actionButton{
+      color:white;
+      font-size: 0.875rem;
+      display:flex;
+      width: 9.0625rem;
+      padding: 1rem 1.5rem;
+      flex-direction: row;
+      justify-content: space-around;
+      gap: 0.625;
+      align-self: stretch;
+      border-radius: 0.75rem;
+      border: 1px solid rgba(255,255,255,0.02);
+      background: linear-gradient(90deg, #424242 0%, rgba(66,66,66,0.4)100%);
+      
+    }
+
+    .actionButton:hover{
+     border: 1px solid ;
+   }
+
+   #menu{
+    display: flex;
+    flex-direction: column;
+    margin:4rem;
+    align-items: flex-start;
+    position:absolute;
+    gap:0.625rem;
+  }
+
+  select{
+    box-shadow: 1px 1px 2px #a0a7b8;
+    border:0;
+    padding:0.25rem;
+    border-radius:0.4rem;
+    font-family: Causten-Regular, sans-serif;;
+    font-size: 1.2rem;
+    width: 7rem;
+  }
+
+
+  #loading{
+    position:absolute;
+    inset:0;
+    display:grid;
+    place-items: center;
+
+  }
+
+
+  .hotspot:focus .annotation{
+    visibility:visible;
+  }
+
+  .hotspot {
+    display: block;
+    width: 30px;
+    height: 30px;
+    border-radius: 12.5rem;
+    border: 3px solid white;
+    background-color: #fdfeff;
+    box-sizing: border-box;
+  }
+
+  .hotspot:hover:not(:focus) {
+    width: 35px;
+    height: 35px;
+    border-radius: 12.5rem;
+  }
+
+  .hotspot:not([data-visible]) {
+    background-color: transparent;
+    border-radius: 12.5rem;
+    border: 3px solid #FFF;
+    background: linear-gradient(152deg, rgb(116, 116, 116) 1.55%, rgb(52, 52, 52) 97.37%);
+    box-shadow: 233px 250px 96px 0 rgb(0, 0, 0), 149px 160px 88px 0 rgb(0, 0, 0), 84px 90px 74px 0 rgba(0, 0, 0, 0.92), 37px 40px 55px 0 rgb(0, 0, 0), 9px 10px 30px 0 rgb(0, 0, 0);
+    backdrop-filter: blur(15px);
+
+  }
+
+  .diffuseButton{
+    color:white;
+    display: flex;
+    width: 19.0625rem;
+    padding: 0.375rem 0.5rem 0.375rem 1rem;
+    justify-content: space-between;
+    align-items: center;
+    border-radius: 2rem;
+    border: 1px solid #424242;
+    background: linear-gradient(90deg, #424242 0%, rgba(66, 66, 66, 0.40) 100%);
+  }
+
+  .diffuseButton:hover{
+   border: 1px solid ;
+ }
+
+ .diffuseButton.active{
+  background: linear-gradient(90deg, var(--btn-color) 0%, rgba(66, 66, 66, 0.40) 100%);  
+}
+
+.info-text{
+  padding-left:1rem;
+}
+
+.annotation{
+  visibility:hidden;
+  font-family: Causten-Regular, sans-serif;
+  text-align: left;
+  background-color: black;
+  background: rgba(0, 0, 0, 0.7);
+  position: absolute;
+  transform: translate(1.5rem, 1rem);
+  width:15rem;
+  color: white;     
+  
+  display: inline-flex;
+  padding: 1.875rem;
+  border-radius: 1.25rem;
+  border: 1px solid rgba(255, 255, 255, 0.70);
+  box-shadow: 233px 250px 96px 0 rgba(0, 0, 0, 0.00), 149px 160px 88px 0 rgba(0, 0, 0, 0.01), 84px 90px 74px 0 rgba(0, 0, 0, 0.05), 37px 40px 55px 0 rgba(0, 0, 0, 0.09), 9px 10px 30px 0 rgba(0, 0, 0, 0.10);
+  backdrop-filter: blur(15px);
+  background: linear-gradient(152deg, rgba(116, 116, 116, 0.72) 1.55%, rgba(52, 52, 52, 0.96) 97.37%);
+}
+
+.annotation-header{
+  display: flex;
+  justify-content: space-between;
+}
+
+.close-btn {
+  width: 1.6rem;
+  height: 1.6rem;
+  border-radius: 50%;
+  border: none;
+  background: transparent;
+  color: #fff;
+  font-size: 1rem;
+  line-height: 1;
+}
+
+.close-btn:hover {
+  background: #333;
+}
+
+
+#circle {
+  width: 2.25rem;
+  height: 2.25rem;
+  -webkit-border-radius: 25px;
+  -moz-border-radius: 25px;
+  border-radius: 25px;
+  background: var(--btn-color) ;
+}
+
+
+</style>
+</head>
+
+<body>
+  <div class="wrapper">
+    <model-viewer 
+    id="plane" 
+    camera-controls 
+    camera-target="0m 2m 0m" 
+    min-camera-orbit="auto auto 2m" 
+    max-camera-orbit="auto 93deg 20m" 
+    touch-action="pan-y" 
+    interaction-prompt="none" 
+    skybox-image="dramatic-aerial-panorama-of-clouds-and-mountain-la-2024-04-29-20-11-53-utc.jpg" 
+    camera-orbit="40deg 70deg 15m" 
+    interpolation-decay="150" 
+    src="https://peschkedev.wpenginepowered.com/wp-content/uploads/custom-assets/aerospace_animated/Diamond_DA42_GroundTest_Animation_Hanger_MidAirFun_test.glb" 
+    exposure="4"  
+    ar alt="device 3D model" 
+    tone-mapping="agx">
+
+    <div class="hotspot" tabindex="0" role="button" slot="hotspot-A" data-position="1.3293m 2.15297m -0.22380m" data-normal="-0.58m 0.28m -0.76m" data-name="OpenClose_Deggl" data-orbit="-8.68088496162102rad 1.258548667764616rad 2.643838m" data-target="1.447m 1.8962m -0.57324552325838m">
+
+      <section class="annotation">
+        <div class="info-text">
+          <div class="annotation-header">
+            <h2>Cockpit</h2>
+            <button class="close-btn" aria-label="Close">x</button>
+          </div>
+          <p> 
+            This module controls the main process parameters and monitors system status.
+            It ensures stable operation and provides clear feedback to the operator.
+          </p>
+          <ul>
+            <li>Real-time performance monitoring</li>
+            <li>Automatic safety checks</li>
+            <li>Intuitive user interface</li>
+            <li>Energy-efficient operation</li>
+          </ul>
+          <p>
+            All functions are designed for reliability, clarity, and long-term usability.
+          </p>
+        </div>
+      </section>
+    </div>
+
+    <div slot="hotspot-B" tabindex="0" role="button" class="hotspot" data-position="0.232m 1.9914m -0.4081m" data-normal="-0.58m 0.28m -0.76m" data-name="Hinterdeggel" data-orbit="-9.70504rad 1.07633rad 2.8371m" data-target="0.555m 1.9826m -0.53199m">
+      <section class="annotation">
+        <div class="info-text">
+          <div class="annotation-header">
+            <h2>Backseat</h2>
+            <button class="close-btn" aria-label="Close">x</button>
+          </div>
+          <p> 
+            This module controls the main process parameters and monitors system status.
+            It ensures stable operation and provides clear feedback to the operator.
+          </p>
+          <ul>
+            <li>Seat made of seat</li>
+            <li>Automatic safety checks</li>
+            <li>Intuitive user interface</li>
+            <li>Energy-efficient operation</li>
+          </ul>
+          <p>
+            All functions are designed for reliability, clarity, and long-term usability.
+          </p>
+        </div>
+      </section>
+    </div>
+
+    <div id="menu">
+      <div class="diffuse-control">
+        <p>Farbe auswählen: </p>
+        <button style="--btn-color: #A62C2C" class="diffuseButton active" data-value="Aircraft_Textur_Test_Rot.png">Rot<div id="circle"></div></button>
+        <button style="--btn-color: #2B71DB" class="diffuseButton" data-value="Aircraft_Textur_Test_Blau_Update.png">Blau<div id="circle"></div></button>
+        <button style="--btn-color: #2C862F" class="diffuseButton" data-value="Aircraft_Textur_Test_Grün.png">Grün<div id="circle"></div></button>
+
+      </div>
+      <div class="action-control">
+        <button class="actionButton" id="resetView"><svg width="17" height="18" viewBox="0 0 17 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M12.7274 4.23282H15.358C14.3586 2.90024 12.9652 1.91589 11.3753 1.41922C9.78531 0.92254 8.07939 0.938719 6.49914 1.46546C4.9189 1.9922 3.54445 3.0028 2.57048 4.3541C1.59651 5.7054 1.07241 7.32889 1.07241 8.99461C1.07241 10.6603 1.59651 12.2838 2.57048 13.6351C3.54445 14.9864 4.9189 15.997 6.49914 16.5238C8.07939 17.0505 9.78531 17.0667 11.3753 16.57C12.9652 16.0733 14.3586 15.089 15.358 13.7564H16.6405C15.6354 15.3709 14.1448 16.6255 12.3824 17.3402C10.6201 18.0549 8.67667 18.193 6.83097 17.7347C4.98528 17.2764 3.33221 16.2452 2.10895 14.7891C0.885685 13.3329 0.155114 11.5268 0.0220606 9.62967C-0.110993 7.73259 0.36031 5.84211 1.36834 4.2295C2.37638 2.61688 3.86933 1.36503 5.63298 0.653559C7.39662 -0.0579117 9.34032 -0.192431 11.1852 0.269305C13.03 0.731041 14.6812 1.7653 15.9017 3.22367V1.05734H16.9599V5.29093H12.7263L12.7274 4.23282Z" fill="white"/>
+        </svg>reset view</button>
+        <button class="actionButton" id="fly" onclick = "flyOff()"><svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M0.00408745 11.472L2.91159 14.3799L2.15841 15.1336L2.86715 15.8424L5.11061 13.5989L4.40186 12.8901L3.61952 13.6725L1.29128 11.3447C1.39885 11.1916 1.54173 11.0667 1.70781 10.9805C1.97168 10.9871 3.40662 11.4328 4.57796 11.843L4.92797 11.9652L5.14605 11.6653C5.60946 11.0318 6.91492 9.28741 7.37151 8.83026L8.67997 7.52178L1.43848 3.32373C1.60921 3.12516 1.84801 2.99759 2.10798 2.96607C2.87124 2.96607 3.35701 3.07975 4.44957 3.38015C6.02053 3.81195 10.7304 5.1109 10.7304 5.1109L11.0117 5.18859L13.8841 2.32028C14.8676 1.3362 16.5481 0.743016 16.9025 1.0974C17.2569 1.45178 16.6626 3.13318 15.6791 4.11672L12.812 6.98339L14.6182 13.5473C14.918 14.6405 15.0322 15.1249 15.0322 15.8895C15.0007 16.1495 14.8732 16.3883 14.6746 16.559L10.4791 9.31712L9.17064 10.6256C8.71404 11.0822 6.96916 12.3874 6.33565 12.8511L6.0358 13.0692L6.15792 13.4192C6.56681 14.5914 7.01387 16.0258 7.01986 16.3003C6.93175 16.4621 6.80749 16.6012 6.65677 16.7071L5.03674 15.0864L4.32799 15.7952L6.52756 17.9948L6.86421 17.7896C7.13463 17.6227 8.02056 17.0249 8.02056 16.2998C8.02056 15.8364 7.50726 14.2681 7.22376 13.4375C7.87527 12.9542 9.39662 11.812 9.87693 11.3316L10.2646 10.944L14.3518 18L14.788 17.741C14.9153 17.6658 16.0346 16.9698 16.0346 15.8895C16.0346 15.0055 15.9043 14.4447 15.5848 13.2818L13.9326 7.27998L16.3887 4.82439C17.5418 3.66993 18.5926 1.37 17.6113 0.388635C16.6299 -0.592727 14.3295 0.458694 13.1756 1.61207L10.7184 4.06874C9.68066 3.78279 6.05706 2.7837 4.71753 2.41515C3.55573 2.09512 2.99418 1.96481 2.11043 1.96481C1.03014 1.96481 0.334202 3.08411 0.258966 3.21141L0 3.64758L7.05312 7.73413L6.66549 8.12177C6.18518 8.60209 5.043 10.1235 4.55969 10.775C3.73046 10.492 2.16331 9.97873 1.69745 9.97873C0.972345 9.97873 0.374273 10.8647 0.207989 11.1362L0.00408745 11.472Z" fill="white"/>
+        </svg>fly away</button>
+      </div>
+    </div>
+
+
+    <effect-composer id="composer" render-mode="quality" msaa="4">
+      <ssao-effect strength="4"></ssao-effect>
+      <color-grade-effect></color-grade-effect>
+    </effect-composer>
+  </model-viewer>
+  <div id="loading">
+    <img src="loading.svg">
+  </div>
+</div>
+
+
+
+<script >
+ const modelViewer = document.querySelector("#plane");
+ const mv = document.querySelector("model-viewer")
+ mv.addEventListener('model-visibility', ()=>{
+  document.getElementById('loading').style.display='none';
+  initialOrbit = modelViewer.cameraOrbit;
+  initialTarget= "0m 2m 0m";
+  updateDiffuseTexture('Planebake', 'Aircraft_Textur_Test_Rot.png');
+});
+
+ let initialOrbit = modelViewer.cameraOrbit;
+ let initialTarget= modelViewer.cameraTarget;
+
+
+ const resetButton= document.getElementById('resetView');
+ resetButton.addEventListener('click', ()=>{
+  modelViewer.animationName="OpenClose_Deggl";
+  modelViewer.cameraTarget = initialTarget;
+  modelViewer.cameraOrbit = initialOrbit;
+  modelViewer.playbackRate = -1;
+  modelViewer.play();
+
+  const tick = () => {
+    console.log(modelViewer.currentTime);
+    if (modelViewer.currentTime <= 0.1) {
+      modelViewer.currentTime = 0;
+      modelViewer.pause();
+      return;
+    }
+    requestAnimationFrame(tick);
+  };
+
+  requestAnimationFrame(tick);
+})
+
+
+ const hs = document.querySelector('.hotspot');
+ const panel = hs.querySelector('.annotation');
+
+ hs.addEventListener('focusin', () => panel.hidden = false);
+ hs.addEventListener('focusout', (e) => {
+  if (!hs.contains(e.relatedTarget)) panel.hidden = true;
+});
+
+
+ plane.querySelectorAll('.hotspot').forEach((hotspot)=>{
+  hotspot.addEventListener('click',()=>annotationClicked(hotspot))
+})
+
+ const annotationClicked= (hotspot)=>{
+  let dataset = hotspot.dataset;
+  modelViewer.animationName = dataset.name;
+  console.log(dataset.name)
+
+  modelViewer.cameraTarget = dataset.target;
+  modelViewer.cameraOrbit = dataset.orbit;
+  modelViewer.play({ repetitions: 1 });
+  const half = modelViewer.duration * 0.8;
+
+  const tick = () => {
+    if (modelViewer.currentTime >= half) {
+      modelViewer.currentTime = half;
+      modelViewer.pause();
+      return;
+    }
+    requestAnimationFrame(tick);
+  };
+
+  requestAnimationFrame(tick);
+}
+
+//not reasonably possible
+async function flyOff(){
+  mv.animationName="planerig";    
+  //modelViewer.skyboxImage = "dramatic-aerial-panorama-of-clouds-and-mountain-la-2024-04-29-20-11-53-utc.jpg";
+  await mv.updateComplete;
+  modelViewer.play({ repetitions: 1 });
+
+}
+window.flyOff=flyOff;
+
+//DISTINCT TEXTURE SETTER
+/*get material,  create new baseColorTexture, apply new tex to material
+  document.getElementById('diffuse').addEventListener('change', (event) => {
+    const createAndApplyTexture = async (event) => {
+      const texture = await modelViewer.createTexture(event.target.value);
+
+      material.pbrMetallicRoughness['baseColorTexture'].setTexture(texture);
+
+    }
+    console.log(modelViewer.model.materials)
+    const material = modelViewer.model.getMaterialByName("Planebake");
+    createAndApplyTexture(event);
+  });*/
+
+function updateDiffuseTexture(materialName, texturePath){
+  const createAndApplyTexture = async (event) => {
+    const texture = await modelViewer.createTexture(texturePath);
+
+    material.pbrMetallicRoughness['baseColorTexture'].setTexture(texture);
+
+  }
+  const material = modelViewer.model.getMaterialByName(materialName);
+  createAndApplyTexture(event);
+}
+
+
+
+const buttons= document.querySelectorAll('.diffuse-control button');
+buttons.forEach(btn=>{
+  btn.addEventListener('click',()=>{
+    buttons.forEach(b=>b.classList.remove('active'));
+    btn.classList.add('active');
+    updateDiffuseTexture('Planebake', btn.dataset.value);
+  })
+});
+
+</script>
+
+
+</body>
+</html>

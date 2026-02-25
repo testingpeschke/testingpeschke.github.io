@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- three.js as base library with model-viewer and model-viewer-effects must be loaded -->
+  <script type="importmap">
+    {
+      "imports": {
+        "three": "https://cdn.jsdelivr.net/npm/three@^0.169.0/build/three.module.min.js"
+      }
+    }
+  </script>
+  <script type="module" src=" https://cdn.jsdelivr.net/npm/@google/model-viewer/dist/model-viewer-module.min.js "></script>
+  <script type="module" src=" https://cdn.jsdelivr.net/npm/@google/model-viewer-effects/dist/model-viewer-effects.min.js "></script>
+
+
+  <title>3D Model Viewer</title>
+  <style type="text/css">
+
+    @font-face {
+      font-family: "Causten-Regular";
+      src: url(https://peschkedev.wpenginepowered.com/wp-content/themes/peschke-design/dist/assets/fonts/causten/CaustenRegular/font.woff2);
+    }
+    model-viewer{
+      height:1000px;
+      width: 100%;
+      background: #2b2a2a;
+
+    }
+
+    body { margin: 0; padding: 0; box-sizing: border-box; background: #2b2a2a;font-family: Causten-Regular, sans-serif;}
+
+    #colorPicker{
+      color:white;
+      gap:1rem;
+      font-family: Causten-Regular, sans-serif;;
+      display:flex;
+      flex-direction: column;
+      font-size: 1rem;
+      align-items: flex-start;
+
+      padding: 1.875rem;
+      border-radius: 1.25rem;
+      border: 1px solid rgba(122, 122, 122, 0.70);
+      background: linear-gradient(152deg, rgba(0, 0, 0, 0.40) 1.55%, rgba(0, 0, 0, 0.16) 97.37%);
+      box-shadow: 233px 250px 96px 0 rgba(0, 0, 0, 0.00), 149px 160px 88px 0 rgba(0, 0, 0, 0.01), 84px 90px 74px 0 rgba(0, 0, 0, 0.05), 37px 40px 55px 0 rgba(0, 0, 0, 0.09), 9px 10px 30px 0 rgba(0, 0, 0, 0.10);
+      backdrop-filter: blur(15px);
+    }
+
+    .action-control{
+      color:white;
+      gap:1rem;
+      font-family: Causten-Regular, sans-serif;;
+      display:flex;
+      flex-direction: row;
+      font-size: 1.125rem;
+      align-items: flex-start;
+
+      padding: 1.875rem;
+      border-radius: 1.25rem;
+      border: 1px solid rgba(122, 122, 122, 0.70);
+      background: linear-gradient(152deg, rgba(0, 0, 0, 0.40) 1.55%, rgba(0, 0, 0, 0.16) 97.37%);
+      box-shadow: 233px 250px 96px 0 rgba(0, 0, 0, 0.00), 149px 160px 88px 0 rgba(0, 0, 0, 0.01), 84px 90px 74px 0 rgba(0, 0, 0, 0.05), 37px 40px 55px 0 rgba(0, 0, 0, 0.09), 9px 10px 30px 0 rgba(0, 0, 0, 0.10);
+      backdrop-filter: blur(15px);
+    }
+
+    #menu{
+      display: flex;
+      flex-direction: column;
+      margin:4rem;
+      align-items: flex-start;
+      position:absolute;
+      gap:0.625rem;
+    }
+
+    select{
+      box-shadow: 1px 1px 2px #a0a7b8;
+      border:0;
+      padding:0.25rem;
+      border-radius:0.4rem;
+      font-family: Causten-Regular, sans-serif;;
+      font-size: 1.2rem;
+      width: 7rem;
+    }
+
+    .diffuseButton{
+      color:white;
+      display: flex;
+      width: 15rem;
+      padding: 0.375rem 0.5rem 0.375rem 1rem;
+      justify-content: space-between;
+      align-items: center;
+      border-radius: 2rem;
+      border: 1px solid #424242;
+      background: linear-gradient(90deg, #424242 0%, rgba(66, 66, 66, 0.40) 100%);
+    }
+
+    .actionButton{
+      font-family: Causten-Regular, sans-serif;
+      color:white;
+      font-size: 1rem;
+      display:flex;
+      width: 12rem;
+      padding: 1rem 1.5rem;
+      flex-direction: row;
+      justify-content: space-around;
+      gap: 0.625;
+      align-self: stretch;
+      border-radius: 0.75rem;
+      border: 1px solid rgba(255,255,255,0.02);
+      background: linear-gradient(90deg, #424242 0%, rgba(66,66,66,0.4)100%);
+      
+    }
+
+    .actionButton:hover{
+     border: 1px solid ;
+   }
+
+   input[type="color"]{
+    border:none;
+    outline: none;
+    overflow:hidden;
+    background:transparent;
+    padding:0;
+    border-radius: 50%;
+    width: 2rem;
+    height:2rem;
+  }
+
+  input[type="color"]::-moz-color-swatch{
+    border:none;
+  }
+
+
+
+
+</style>
+</head>
+
+<body>
+  <!-- model-viewer and script must be kept as is to guarantee correct visualisation -->
+  <div class="wrapper">
+    <model-viewer id="plane" skybox-height="1.5m" exposure="2" shadow-intensity="6" environment-image="Retail Store_sw_levels.hdr" camera-controls  camera-target="0 0 0" min-camera-orbit="auto auto 0.1m" max-camera-orbit="auto 93deg 35m" touch-action="pan-y" interaction-prompt="none" camera-orbit="40deg 70deg 15m"  src="KonfiBase_withMap.glb" skybox-height="0.0m" ar alt="device 3D model" tone-mapping="agx">
+
+<!--
+      <div class="controls glass" id="diffuse-control">
+        <div>
+          <p>Farbe auswählen: </p>
+          <select id="diffuse">
+            <option value="#AF40FF">Rot</option>
+            <option value="#0000ff">Blau</option>
+            <option value="#00ff00">Grün</option>
+
+          </select>
+        </div>
+      </div>-->
+      <div id="menu">
+        <form  id="colorPicker" autocomplete="off">
+          <div class="diffuseButton"><label for="primColor">Green elements: </label><input type="color" class="primColor" data-default="rgba(149, 194, 61)" value="rgba(149, 194, 61)" data-primmat="greenbake"/></div>
+          <div class="diffuseButton"><label for="primColor">Dark gray elements: </label><input type="color" class="primColor" data-default="rgba(87, 87, 88)" value="rgba(87, 87, 88)" data-primmat="darkgreybake"/></div>
+          <div class="diffuseButton"><label for="primColor">Light gray elements: </label><input type="color" class="primColor" data-default="rgba(218, 218, 218)" value="rgba(218, 218, 218)" data-primmat="lightgreybake"/></div>
+        </form>
+        <div class="action-control">
+          <button class="actionButton" id="resetView"><svg width="17" height="18" viewBox="0 0 17 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M12.7274 4.23282H15.358C14.3586 2.90024 12.9652 1.91589 11.3753 1.41922C9.78531 0.92254 8.07939 0.938719 6.49914 1.46546C4.9189 1.9922 3.54445 3.0028 2.57048 4.3541C1.59651 5.7054 1.07241 7.32889 1.07241 8.99461C1.07241 10.6603 1.59651 12.2838 2.57048 13.6351C3.54445 14.9864 4.9189 15.997 6.49914 16.5238C8.07939 17.0505 9.78531 17.0667 11.3753 16.57C12.9652 16.0733 14.3586 15.089 15.358 13.7564H16.6405C15.6354 15.3709 14.1448 16.6255 12.3824 17.3402C10.6201 18.0549 8.67667 18.193 6.83097 17.7347C4.98528 17.2764 3.33221 16.2452 2.10895 14.7891C0.885685 13.3329 0.155114 11.5268 0.0220606 9.62967C-0.110993 7.73259 0.36031 5.84211 1.36834 4.2295C2.37638 2.61688 3.86933 1.36503 5.63298 0.653559C7.39662 -0.0579117 9.34032 -0.192431 11.1852 0.269305C13.03 0.731041 14.6812 1.7653 15.9017 3.22367V1.05734H16.9599V5.29093H12.7263L12.7274 4.23282Z" fill="white"/>
+          </svg>Reset Colors</button></div>
+
+        </div>
+<!--
+      <div class="slider">
+        <p>Metalness: <span id="metalness-value"></span></p>
+        <input id="metalness" type="range" min="0" max="1" step="0.01" value="1">
+      </div>
+      <div class="slider">
+        <p>Roughness: <span id="roughness-value"></span></p>
+        <input id="roughness" type="range" min="0" max="1" step="0.01" value="0">
+      </div>-->
+
+
+
+      <effect-composer id="composer" render-mode="quality" msaa="6">
+        <ssao-effect strength="2"></ssao-effect>
+        <outline-effect strength="1" radius="0.7" threshold="0"></outline-effect>
+        <color-grade-effect></color-grade-effect>
+      </effect-composer>
+    </model-viewer>
+  </div>
+
+
+
+  <script type="module" >
+   const modelViewer = document.querySelector("#plane");
+   const mv = document.querySelector("model-viewer");
+   let materials;
+   let greenMats=[];
+   let lGreyMats=[];
+   let dGreyMats=[];
+   mv.addEventListener('model-visibility', ()=>{
+
+
+    materials= modelViewer.model.materials;
+    greenMats = materials.filter(mat => mat.name && mat.name.includes("greenbake"));
+    lGreyMats = materials.filter(mat => mat.name && mat.name.includes("lightgreybake"));
+    dGreyMats = materials.filter(mat => mat.name && mat.name.includes("darkgreybake"));
+    dGreyMats.forEach(mat=>{
+      mat.pbrMetallicRoughness.setRoughnessFactor("0.46");
+      mat.pbrMetallicRoughness.setMetallicFactor("0.13");
+    });
+    greenMats.forEach(mat=> mat.pbrMetallicRoughness.setBaseColorFactor('#95C23D'));
+    lGreyMats.forEach(mat=> mat.pbrMetallicRoughness.setBaseColorFactor('#575758'));
+    dGreyMats.forEach(mat=> mat.pbrMetallicRoughness.setBaseColorFactor('#DADADA'));
+/*
+    const mat0= greenMats[0];
+    let metalnessDisplay = document.querySelector("#metalness-value");
+    let roughnessDisplay = document.querySelector("#roughness-value");
+    metalnessDisplay.textContent = mat0.pbrMetallicRoughness.metallicFactor;
+    roughnessDisplay.textContent = mat0.pbrMetallicRoughness.roughnessFactor;
+
+    document.querySelector('#metalness').addEventListener('input', (event) => {
+      greenMats.forEach(mat=>{
+        mat.pbrMetallicRoughness.setMetallicFactor(event.target.value);
+        metalnessDisplay.textContent = event.target.value;});
+    });
+
+    document.querySelector('#roughness').addEventListener('input', (event) => {
+      greenMats.forEach(mat=>{
+        mat.pbrMetallicRoughness.setRoughnessFactor(event.target.value);
+        roughnessDisplay.textContent = event.target.value;
+      });
+    });
+*/
+
+
+  });
+   const composer = document.querySelector("effect-composer#composer");
+   const selectiveOutline = composer.querySelector("outline-effect");
+   selectiveOutline.blendMode = 'skip';
+
+   let matsToChange;
+
+
+
+     //DISTINCT TEXTURE SETTER SELECT
+   /*
+   document.getElementById('diffuse').addEventListener('change', (event) => {
+    const colorString = event.target.value;
+    console.log(event)
+    let materials = modelViewer.model.materials;
+    materials.forEach(m=>console.log(m.name));
+    const filtered = materials.filter(mat =>
+      mat.name && mat.name.includes("greenbake")
+      );
+    filtered.forEach(mat=> mat.pbrMetallicRoughness.setBaseColorFactor(colorString));
+  });*/
+
+   const resetButton= document.getElementById('resetView');
+   resetButton.addEventListener('click', ()=>{
+    greenMats.forEach(mat=> mat.pbrMetallicRoughness.setBaseColorFactor('#95C23D'));
+    lGreyMats.forEach(mat=> mat.pbrMetallicRoughness.setBaseColorFactor('#575758'));
+    dGreyMats.forEach(mat=> mat.pbrMetallicRoughness.setBaseColorFactor('#DADADA'));
+    document.querySelectorAll('.primColor').forEach(base=>{
+      base.value= base.dataset.default;
+    });
+  });
+
+   //DISTINCT TEXTURE SETTER COLORPICKER
+   document.querySelectorAll('.primColor').forEach(base=>{
+
+    base.addEventListener('input', (event) => {
+      const colorString = event.target.value;
+
+      const filtered = materials.filter(mat =>
+        mat.name && mat.name.includes(event.target.dataset.primmat)
+        );
+      filtered.forEach(mat=> mat.pbrMetallicRoughness.setBaseColorFactor(colorString));
+    });
+
+    base.addEventListener('mouseenter', (event)=>{
+      let selection=[];
+      composer.selection.forEach(obj=>{
+        obj.material.name.includes(event.target.dataset.primmat)&&
+        selection.push(obj);
+      });
+      selectiveOutline.selection=selection;
+      selectiveOutline.blendMode = 'default';
+    });
+
+    base.addEventListener('mouseleave', (event)=>{
+      selectiveOutline.blendMode = 'skip';
+    });
+
+  });
+
+
+
+</script>
+
+
+</body>
+</html>

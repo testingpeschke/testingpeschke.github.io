@@ -18,6 +18,11 @@
 
   <title>3D Model Viewer</title>
   <style type="text/css">
+    @font-face {
+      font-family: "Causten-Regular";
+      src: url(https://peschkedev.wpenginepowered.com/wp-content/themes/peschke-design/dist/assets/fonts/causten/CaustenRegular/font.woff2);
+    }
+
     model-viewer{
       height:1000px;
       width: 100%;
@@ -184,11 +189,6 @@
   background: linear-gradient(152deg, rgba(116, 116, 116, 0.72) 1.55%, rgba(52, 52, 52, 0.96) 97.37%);
 }
 
-    @font-face {
-      font-family: "Causten-Regular";
-      src: url(https://peschkedev.wpenginepowered.com/wp-content/themes/peschke-design/dist/assets/fonts/causten/CaustenRegular/font.woff2);
-    }
-
 .annotation-header{
   display: flex;
   justify-content: space-between;
@@ -292,10 +292,10 @@
 
     <div id="menu">
       <div class="diffuse-control">
-        <p>Farbe auswählen: </p>
-        <button style="--btn-color: #A62C2C" class="diffuseButton active" data-value="Aircraft_Textur_Test_Rot.png">Rot<div id="circle"></div></button>
-        <button style="--btn-color: #2B71DB" class="diffuseButton" data-value="Aircraft_Textur_Test_Blau_Update.png">Blau<div id="circle"></div></button>
-        <button style="--btn-color: #2C862F" class="diffuseButton" data-value="Aircraft_Textur_Test_Grün.png">Grün<div id="circle"></div></button>
+        <p>Select colour: </p>
+        <button style="--btn-color: #A62C2C" class="diffuseButton active" data-value="Aircraft_Textur_Test_Rot.png">red<div id="circle"></div></button>
+        <button style="--btn-color: #2B71DB" class="diffuseButton" data-value="Aircraft_Textur_Test_Blau_Update.png">blue<div id="circle"></div></button>
+        <button style="--btn-color: #2C862F" class="diffuseButton" data-value="Aircraft_Textur_Test_Grün.png">green<div id="circle"></div></button>
 
       </div>
       <div class="action-control">
